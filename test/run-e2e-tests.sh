@@ -89,6 +89,11 @@ collect_logs() {
     echo "Logs for ${pod}"
     kubectl logs -n aibrix-system ${pod}
   done
+
+  for pod in $(kubectl get pods -o name); do
+    echo "Logs for ${pod}"
+    kubectl logs ${pod}
+  done
 }
 
 trap "collect_logs" ERR

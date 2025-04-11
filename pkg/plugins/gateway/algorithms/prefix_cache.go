@@ -86,6 +86,13 @@ func (p prefixCacheRouter) Route(ctx *types.RoutingContext, pods types.PodList) 
 	var matchedPods map[string]int
 	var targetPod *v1.Pod
 
+	podlist, _ := p.cache.ListPodsByModel(ctx.Model)
+	podnames := []string{}
+	for _, pod := range podlist.All() {
+		podnames = append(podnames, pod.Name)
+	}
+	klog.InfoS("prefix_cache_router", "pods", podnames)
+
 	tokens, err := p.tokenizer.TokenizeInputText(ctx.Message)
 	if err != nil {
 		return "", err
